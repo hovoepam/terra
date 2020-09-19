@@ -1,10 +1,16 @@
 # Configure the Microsoft Azure Provider
-provider "azurerm" { 
+provider "azurerm" {
   features {}
-  }
+  version = "~> 2.0"
 
 # Create a resource group 
-data "azurerm_resource_group" "myterraformgroup" {
+resource "azurerm_resource_group" "myterraformgroup" {
+    name     = "myResourceGroup"
+    location = "eastus"
+
+    tags = {
+        environment = "Terraform Demo"
+    }
 }
 
 # Create virtual network
@@ -12,7 +18,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     name                = "myVnet"
     address_space       = ["10.0.0.0/16"]
     location            = "eastus"
-    resource_group_name = data.azurerm_resource_group.myterraformgroup.name
+    resource_group_name = azurerm_resource_group.myterraformgroup.name
 
     tags = {
         environment = "Terraform Demo"
